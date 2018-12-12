@@ -3,6 +3,7 @@ package univer.labs.ignatolyalab;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,13 @@ public class MainActivity extends AppCompatActivity {
 
         mTextView = findViewById(R.id.textView);
 
+//        TelephonyManager tm = (TelephonyManager)
+//                getSystemService(this.TELEPHONY_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            String imei = tm.getImei();
+//        } else {
+//            String imei = tm.getDeviceId();
+//        }
         final String OSVERSION = System.getProperty("os.version");
         final String RELEASE = android.os.Build.VERSION.RELEASE;
         final String DEVICE = android.os.Build.DEVICE;
@@ -38,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         final String SERIAL = android.os.Build.SERIAL;
         final String USER = android.os.Build.USER;
         final String HOST = android.os.Build.HOST;
-        final String DEVICE_IMEI  = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        final String ANDROID_ID  = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        final String DEVICE_IMEI  = getIMEINumber();
 
         String textInfo = OSVERSION +
                 RELEASE +
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 SERIAL +
                 USER +
                 HOST +
+                ANDROID_ID +
                 DEVICE_IMEI;
 
 
@@ -78,8 +88,24 @@ public class MainActivity extends AppCompatActivity {
                 "SERIAL: " + SERIAL + "\n" +
                 "USER: " + USER + "\n" +
                 "HOST: " + HOST + "\n" +
+                "ANDROID_ID: " + ANDROID_ID + "\n" +
                 "DEVICE IMEI: " + DEVICE_IMEI + "\n" +
                 "UNICAL ID: " + String.valueOf(unicalId));
 
+    }
+
+    @SuppressLint("MissingPermission")
+    @SuppressWarnings("deprecation")
+    private String getIMEINumber() {
+        String IMEINumber = "";
+        //if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            TelephonyManager telephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                IMEINumber = telephonyMgr.getImei();
+            } else {
+                IMEINumber = telephonyMgr.getDeviceId();
+            }
+        //}
+        return IMEINumber;
     }
 }
