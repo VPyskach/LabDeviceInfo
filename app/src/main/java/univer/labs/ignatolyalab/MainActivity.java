@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         final String HOST = android.os.Build.HOST;
         final String DEVICE_IMEI  = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        String info = OSVERSION +
+        String textInfo = OSVERSION +
                 RELEASE +
                 DEVICE +
                 MODEL +
@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 DEVICE_IMEI;
 
 
-        int device = 0;
-        for (int i = 0; i < info.length(); i++) {
-            device = device + (byte) info.charAt(i);
+        int unicalId = 0;
+        for (int i = 0; i < textInfo.length(); i++) {
+            unicalId = unicalId + (byte) textInfo.charAt(i);
         }
 
         mTextView.setText("RELEASE: " + RELEASE + "\n" +
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 "USER: " + USER + "\n" +
                 "HOST: " + HOST + "\n" +
                 "DEVICE IMEI: " + DEVICE_IMEI + "\n" +
-                "UNICAL ID: " + String.valueOf(device));
+                "UNICAL ID: " + String.valueOf(unicalId));
 
     }
 }
